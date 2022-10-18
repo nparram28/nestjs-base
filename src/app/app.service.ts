@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
 
   async findAll(): Promise<any>{
-    return 'AppService';
+    throw new InternalServerErrorException('Exception');
+  }
+
+  async find(): Promise<any>{
+    return 'find';
   }
 }
