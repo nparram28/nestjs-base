@@ -3,10 +3,11 @@ import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app/app.controller';
 import { AppService } from './app/app.service';
+import { AppMessages } from './app/messages/app.messages';
 
 @Module({
     imports: [ConfigModule.forRoot({ isGlobal: true }),HttpModule],
-    providers: [AppService],
+    providers: [AppService, AppMessages],
     controllers: [AppController],
   })
   export class AppModule {}
