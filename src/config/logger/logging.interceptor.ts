@@ -17,15 +17,18 @@ export class LoggingInterceptor implements NestInterceptor {
 
         const method = request.method;
         const url = request.originalUrl;
-        const body = request.body ? JSON.stringify(request.body) : 'Not Body';
+        const body = JSON.stringify(request.body);
+        const params = JSON.stringify(request.params);
+        const query = JSON.stringify(request.query);
+        const statusCode = response.statusCode;
 
-        const message = `[${method}] [${url}] [${body}]`;
+        const message = `[${method}] [${url}] [Params: ${params}] [Query: ${query}] [Body: ${body}] [StatusCode: ${statusCode}]`;
 
         return next.handle().pipe(
             tap(() => {
                 Logger.log(message);
             }),
-            catchError((error)=> {
+            catchError(error => {
                 Logger.error(message);
                 throw new InternalServerErrorException(error);
             }),
