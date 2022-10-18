@@ -9,10 +9,17 @@ export class AppController {
         private appService: AppService,
     ) { }
 
-    @Get()
+    @Get('findAll')
     async findAll(@Res() response: Response): Promise<void>{
         
         const result = await this.appService.findAll();
+        response.status(HttpStatus.OK).json({ Data: result });
+    }
+
+    @Get('find')
+    async find(@Res() response: Response): Promise<void>{
+        
+        const result = await this.appService.find();
         response.status(HttpStatus.OK).json({ Data: result });
     }
 }

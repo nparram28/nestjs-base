@@ -16,52 +16,28 @@ export class AllException implements ExceptionFilter {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
 
-        logger.error(JSON.stringify(exception), ctx.getRequest().url);
-        Logger.error(
-            JSON.stringify(exception),
-            null,
-            'AllException',
-            false,
-        );
+        logger.error(exception.toString(), ctx.getRequest().url);
 
-        const apiResponse = JSON.parse(JSON.stringify(exception)).response
-            .response;
+        const jsonError = JSON.parse(JSON.stringify(exception));
 
         const status =
             exception instanceof HttpException
-                ? apiResponse
-                    ? apiResponse.apiCode
-                        ? apiResponse.apiCode
-                        : apiResponse.statusCode
-                        ? apiResponse.statusCode
-                        : HttpStatus.INTERNAL_SERVER_ERROR
-                    : HttpStatus.INTERNAL_SERVER_ERROR
+                ? exception.getStatus()
                 : HttpStatus.INTERNAL_SERVER_ERROR;
 
-        let statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+        const apiMessage = exception instanceof HttpException
+            ? exception.message
+            : 'Ha ocurrido un error';
 
-        if (!Object.values(HttpStatus).includes(status)) {
-            statusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
-        } else {
-            statusResponse = status;
-        }
+        const apiCode = jsonError.response.code ? jsonError.response.code : status;
+        const isOperational = jsonError.response.isOperational ? jsonError.response.isOperational : false;
 
-        response.status(statusResponse).json({
-            apiCode: status,
-            apiMessage: apiResponse
-                ? apiResponse.apiMessage
-                    ? apiResponse.apiMessage
-                    : apiResponse.message
-                    ? apiResponse.message
-                    : 'Error'
-                : 'Error',
-            apiResponse: apiResponse
-                ? apiResponse.apiReason
-                    ? apiResponse.apiReason
-                    : apiResponse.error
-                    ? apiResponse.error
-                    : 'Error'
-                : 'Error',
+        response.status(status).json({
+            apiCode: apiCode,
+            apiData: null,
+            apiError: true,
+            apiErrors: null,
+            apiMessage: isOperational ? apiMessage : 'Ha ocurrido un error'
         });
     }
 }
