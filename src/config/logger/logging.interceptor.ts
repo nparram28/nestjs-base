@@ -13,16 +13,14 @@ import { tap, catchError } from 'rxjs/operators';
 export class LoggingInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest();
-        const response = context.switchToHttp().getResponse();
 
         const method = request.method;
         const url = request.originalUrl;
         const body = JSON.stringify(request.body);
         const params = JSON.stringify(request.params);
         const query = JSON.stringify(request.query);
-        const statusCode = response.statusCode;
 
-        const message = `[${url}] [${method}] [StatusCode: ${statusCode}] [Params: ${params}] [Query: ${query}] [Body: ${body}]`;
+        const message = `[${url}] [${method}] [Params: ${params}] [Query: ${query}] [Body: ${body}]`;
 
         return next.handle().pipe(
             tap(() => {

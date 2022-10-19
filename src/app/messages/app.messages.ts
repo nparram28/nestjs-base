@@ -6,7 +6,7 @@ export class AppMessages {
 
     returnDataSuccessfully(data?: any): ResponseMessage {
         return {
-            apiCode: 50200,
+            apiCode: 20200,
             apiData: data,
             apiError: false,
             apiErros: null,
