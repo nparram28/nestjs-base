@@ -5,6 +5,6 @@ import { BaseException } from "../../config/exception/baseException.exception";
 export class AppNotFoundException extends BaseException {
 
     constructor() {
-        super('La app no existe', 50500, true);
+        super('App not found', 50500, true);
     }
 }
