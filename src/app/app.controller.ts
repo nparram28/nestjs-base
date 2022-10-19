@@ -2,7 +2,9 @@ import { Controller, Get, HttpStatus, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response } from 'express';
 import { AppMessages } from './messages/app.messages';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('BaseNestJs')
 @Controller('app')
 export class AppController {
 
