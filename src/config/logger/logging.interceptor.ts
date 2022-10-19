@@ -22,7 +22,7 @@ export class LoggingInterceptor implements NestInterceptor {
         const query = JSON.stringify(request.query);
         const statusCode = response.statusCode;
 
-        const message = `[${method}] [${url}] [Params: ${params}] [Query: ${query}] [Body: ${body}] [StatusCode: ${statusCode}]`;
+        const message = `[${url}] [${method}] [StatusCode: ${statusCode}] [Params: ${params}] [Query: ${query}] [Body: ${body}]`;
 
         return next.handle().pipe(
             tap(() => {
