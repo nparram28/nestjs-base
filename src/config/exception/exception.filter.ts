@@ -17,6 +17,7 @@ export class AllException implements ExceptionFilter {
         const response = ctx.getResponse<Response>();
 
         logger.error(exception.toString(), ctx.getRequest().url);
+        Logger.error(exception.toString())
 
         const jsonError = JSON.parse(JSON.stringify(exception));
 
