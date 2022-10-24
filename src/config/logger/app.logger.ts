@@ -2,7 +2,7 @@ import { LoggerService } from '@nestjs/common';
 import * as winston from 'winston';
 import { Logger } from 'winston';
 import 'winston-daily-rotate-file';
-
+const winstonElasticsearch = require('winston-elasticsearch');
 export class AppLogger implements LoggerService {
     private logger: Logger;
 
@@ -14,6 +14,28 @@ export class AppLogger implements LoggerService {
             frequency: '1d',
         });
 
+        const esTransportOpts = {
+            level: 'info',
+            indexPrefix: process.env.ELASTIC_INDEX,
+            clientOpts : {
+                node: process.env.ELASTIC_URL,
+                maxRetries: 5,
+                requestTimeout: 10000,
+                sniffOnStart: false,
+                auth: {
+                    username: process.env.ELASTIC_USER,
+                    password: process.env.ELASTIC_PASS
+                }
+            },
+            transformer: (log : any) => {
+                log.fecha = new Date();
+                return log;
+            },
+            source: 'api'
+        };
+
+        const esTransport = new winstonElasticsearch.ElasticsearchTransport(esTransportOpts);
+  
         this.logger = winston.createLogger({
             format: winston.format.combine(
                 winston.format.metadata({
@@ -30,8 +52,8 @@ export class AppLogger implements LoggerService {
                     }]`;
                 }),
             ),
-            transports: [transport],
-            exitOnError: false,
+            transports: [transport,esTransport],
+            exitOnError: true,
         });
     }
 
