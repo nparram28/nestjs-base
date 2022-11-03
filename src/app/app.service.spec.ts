@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BaseException } from '../config/exception/baseException.exception';
 import { AppService } from './app.service';
 import { AppNotFoundException } from './exceptions/appNotFoundException.exception';
 
