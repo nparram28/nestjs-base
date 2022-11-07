@@ -13,7 +13,8 @@ import { TypeOrmConfigService } from './config/database/TypeOrmConfigService';
       ,HttpModule
       ,TypeOrmModule.forRootAsync({
         useClass: TypeOrmConfigService,
-    }),],
+    })
+  ],
     providers: [AppService, AppMessages, AppNotFoundException],
     controllers: [AppController],
   })
