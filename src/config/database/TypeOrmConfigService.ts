@@ -6,13 +6,13 @@ import { Table } from '../../app/entity/table.entity';
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     async createTypeOrmOptions(): Promise<TypeOrmModuleOptions> {
         return {
-            name: 'name',
+            name: process.env.DB_NAME,
             type: 'mssql',
-            host: 'host',
+            host: process.env.DB_HOST,
             port: 1433,
-            username: 'user',
-            password: 'password',
-            database: 'database',
+            username: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_DATABASE,
             entities: [Table],
             synchronize: false,
             options: { encrypt: false, trustServerCertificate: true, useUTC: false }

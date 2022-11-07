@@ -11,12 +11,13 @@ import { AppLogger } from '../logger/app.logger';
 
 @Catch()
 export class AllException implements ExceptionFilter {
+    constructor(private readonly logger: AppLogger){}
+
     catch(exception: unknown, host: ArgumentsHost) {
-        const logger: AppLogger = new AppLogger();
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
 
-        logger.error(exception.toString(), ctx.getRequest().url);
+        this.logger.error(exception.toString(), ctx.getRequest().url);
         Logger.error(exception.toString())
 
         const jsonError = JSON.parse(JSON.stringify(exception));
